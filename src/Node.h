@@ -1,5 +1,3 @@
-#include<stdio.h>
-
 class node{
 public:
   int key;
