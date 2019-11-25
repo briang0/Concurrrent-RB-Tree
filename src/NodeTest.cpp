@@ -5,8 +5,8 @@
 using namespace std;
 
 int testNilNodeCreation() {
-  node nil (-1, nullptr, nullptr, nullptr);
-  if (!(nil.key == -1 && nil.parent == nullptr && nil.left == nullptr && nil.right == nullptr)) {
+  node nil (-1, NULL, NULL, NULL);
+  if (!(nil.key == -1 && nil.parent == NULL && nil.left == NULL && nil.right == NULL)) {
     cout << "testNilNodeCreation failure\n";
     return 1;
   }
@@ -14,23 +14,22 @@ int testNilNodeCreation() {
 }
 
 int testParentChildRelationship() {
-  node* parent = new node(5, nullptr, nullptr, nullptr);
-  node* rightChild = new node(6, parent, nullptr, nullptr);
-  node* leftChild = new node(4, parent, nullptr, nullptr);
-  cout << "made\n";
-  parent->setRight(rightChild);
-  parent->setLeft(leftChild);
-  int leftChildKey = parent->getLeft()->getKey();
+  node* parent = new node(5, NULL, NULL, NULL);
+  node* rightChild = new node(6, parent, NULL, NULL);
+  node* leftChild = new node(4, parent, NULL, NULL);
+  parent->right = rightChild;
+  parent->left = leftChild;
+  int leftChildKey = parent->left->key;
   if (leftChildKey != 4){
     cout << "Unexpected left key\n";
     return 1;
   }
-  leftChildKey = parent->getLeft()->getParent()->getRight()->getParent()->getLeft()->getKey();
+  leftChildKey = parent->left->parent->right->parent->left->key;
   if (leftChildKey != 4){
     cout << "Unexpected left key 2 \n";
     return 1;
   }
-  int rightChildKey = parent->getLeft()->getParent()->getRight()->getKey();
+  int rightChildKey = parent->left->parent->right->key;
   if (rightChildKey != 6) {
     cout << "Unexpected right key\n";
     return 1;

@@ -1,42 +1,48 @@
 #include <stdio.h>
-using namespace std
+#include <iostream>
+#include <vector>
+#include "Node.h"
+using namespace std;
 
-struct node {
-  int key;
-  bool nil;
-  struct node* left;
-  struct node* right;
-  bool color;
-
-  construct(node* parent, int keyIn){
-    if (parent == NULL){
-      nil = true;
-      left = nullptr;
-      right = nullptr;
-      color = false;
-    }else {
-
-    }
-    key = key;
-  }
-//  mutex m;
-}
+node* nil = new node(-1, NULL, NULL, NULL);
 
 class RedBlackTree {
 public:
-  node* root
-  node* nil =
+  node* root;
 
-  void insert() {
-
+  RedBlackTree(node* inRoot) {
+    root = inRoot;
   }
 
-  void remove() {
+  void insert();
 
+  void remove();
+
+  void balance();
+
+  void inOrderTraversal(vector<node*>* order, node* cur_root);
+
+  vector<node*>* getInOrderTraversal(node* inRoot);
+
+  node* getRoot();
+
+};
+
+void RedBlackTree::inOrderTraversal(vector<node*>* order, node* cur_root) {
+  if (cur_root == NULL) {
+    return;
   }
+  inOrderTraversal(order, cur_root->left);
+  order->push_back(cur_root);
+  inOrderTraversal(order, cur_root->right);
+}
 
-  void balance() {
+vector<node*>* RedBlackTree::getInOrderTraversal(node* inRoot) {
+  vector<node*>* order = new vector<node*>();
+  inOrderTraversal(order, inRoot);
+  return order;
+}
 
-  }
-
+node* RedBlackTree::getRoot() {
+  return root;
 }
