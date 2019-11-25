@@ -7,7 +7,6 @@
 using namespace std;
 
 int testInorderTraversal() {
-  int val = 0;
   node* root = new node(10, NULL, NULL, NULL);
   node* ch1 = new node(12, root, NULL, NULL);
   node* ch2 = new node(11, ch1, NULL, NULL);
@@ -34,10 +33,14 @@ int testInorderTraversal() {
   for (int i = 0; i < 6; i++) {
     cout << inorder->at(i)->key << "\n";
     if (inorder->at(i)->key != expectedInorder->at(i)->key) {
-      val++;
+      return 1;
     }
   }
-  return val;
+  return 0;
+}
+
+int testInsertion1() {
+  
 }
 
 int main(){

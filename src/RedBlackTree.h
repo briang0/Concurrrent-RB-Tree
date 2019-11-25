@@ -15,11 +15,23 @@ public:
     nil = new node(-1, nullptr, nullptr, nullptr);
   }
 
+  RedBlackTree() {
+    root = NULL;
+  }
+
+  node* insertHelper(node*& root, node*& toInsert);
+
   void insert();
 
-  void remove();
+  void insertKey(int key);
 
-  void balance();
+  void fix(node* toEnter);
+
+  void leftRotate(node* toRotate);
+
+  void rightRotate(node* toRotate);
+
+  void remove();
 
   void inOrderTraversal(vector<node*>* order, node* cur_root);
 

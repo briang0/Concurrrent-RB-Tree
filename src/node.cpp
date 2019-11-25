@@ -13,6 +13,7 @@ public:
     parent = inParent;
     left = inLeft;
     right = inRight;
+    color = true;
   }
 
 };
