@@ -9,6 +9,7 @@ node* nil = new node(-1, NULL, NULL, NULL);
 class RedBlackTree {
 public:
   node* root;
+  node* toAdd;
 
   RedBlackTree(node* inRoot) {
     root = inRoot;
@@ -16,19 +17,14 @@ public:
 
   RedBlackTree() {
     root = NULL;
+    toAdd = NULL;
   }
 
-  node* insertHelper(node*& root, node*& toInsert);
+  void fix(node *&toEnter);
 
-  void insert(node*& toInsert);
+  void leftRotate(node *&toRotate);
 
-  void insertKey(int key);
-
-  void fix(node *toEnter);
-
-  void leftRotate(node *toRotate);
-
-  void rightRotate(node *toRotate);
+  void rightRotate(node *&toRotate);
 
   void remove();
 
@@ -37,8 +33,6 @@ public:
   vector<node*>* getInOrderTraversal(node* inRoot);
 
   void add(int key);
-
-  node* getRoot();
 
 };
 
@@ -59,26 +53,8 @@ vector<node*>* RedBlackTree::getInOrderTraversal(node* inRoot) {
   return order;
 }
 
-// void add(int val) {
-//   bool exists = false;
-//   node* cur = root;
-//   while (!cur.isLeaf() && !found) {
-//     if (cur->key == val) {
-//       found = !found;
-//     }else if (val > cur->key) {
-//       cur = cur->right;
-//     }else {
-//       cur = cur->left;
-//     }
-//   }
-//   if (!found) {
-//     toInsert = new node(val, NULL, NULL, NULL);
-//     toInsert->color = true;
-//   }
-// }
-
-void RedBlackTree::fix(node *toEnter) {
-  node* cur;
+void RedBlackTree::fix(node *&toEnter) {
+  node* cur = NULL;
   if (root == toEnter) {
     toEnter->color = false;
     return;
@@ -126,7 +102,7 @@ void RedBlackTree::fix(node *toEnter) {
   }
 }
 
-void RedBlackTree::leftRotate(node *toRotate) {
+void RedBlackTree::leftRotate(node *&toRotate) {
   if (toRotate->right != NULL) {
     node* right = toRotate->right;
     if (right->left != NULL) {
@@ -152,7 +128,7 @@ void RedBlackTree::leftRotate(node *toRotate) {
   }
 }
 
-void RedBlackTree::rightRotate(node* toRotate) {
+void RedBlackTree::rightRotate(node*& toRotate) {
   if (toRotate->left != NULL) {
     node* left = toRotate->left;
     if (left->right != NULL) {
@@ -170,23 +146,12 @@ void RedBlackTree::rightRotate(node* toRotate) {
       if (toRotate == toRotate->parent->left) {
         toRotate->parent->left = left;
       } else {
-        toRotate->parent->right=left;
+        toRotate->parent->right = left;
       }
     }
+    left->right = toRotate;
+    toRotate->parent = left;
   }
-}
-
-node* RedBlackTree::insertHelper(node*& root, node*& toInsert) {
-  if (root == NULL) return toInsert;
-
-  if (toInsert->key < root->key) {
-    root->left = insertHelper(root->left, toInsert);
-    root->left->parent = root;
-  } else if (toInsert->key > root->key) {
-    root->right = insertHelper(root->right, toInsert);
-    root->right->parent = root;
-  }
-  return root;
 }
 
 void RedBlackTree::add(int key) {
@@ -212,14 +177,4 @@ void RedBlackTree::add(int key) {
     }
   }
   fix(cur);
-}
-
-void RedBlackTree::insertKey(int key) {
-  node* toInsert = new node(key, NULL, NULL, NULL);
-  add(key);
-  fix(toInsert);
-}
-
-node* RedBlackTree::getRoot() {
-  return root;
 }
