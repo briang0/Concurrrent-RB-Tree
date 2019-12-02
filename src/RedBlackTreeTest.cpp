@@ -49,21 +49,39 @@ int testInsertion1() {
   tree->add(7);
   tree->getInOrderTraversal(tree->root);
   node* root = tree->root;
-  int ten = root->left->right->key;
-  cout << ten << endl;
-  // int expectedRootKey = 11;
-  // int expectedRootColor = 0;
-  // int expectedRightKey = 12;
-  // int expectedRightColor = 0;
-  // int actualRootKey = root->key;
-  // bool actualRootColor = root->color;
-  // int actualRightKey = root->right->key;
-  // bool actualRightColor = root->right->color;
-  // int actualLeftKey = root->left->key;
-  // bool actualLeftColor = root->left->color;
-  // cout << actualRootKey << " : " << actualRootColor << endl;
-  // cout << actualRightKey << " : " << actualRightColor << endl;
-  // cout << actualLeftKey << " : " << actualLeftColor << endl;
+  int expected = 10;
+  int actual = root->left->right->key;
+  if (expected != actual) {
+    return 1;
+  }
+  return 0;
+}
+
+int testInsertion2() {
+  RedBlackTree* tree = new RedBlackTree();
+  tree->add(350);
+  tree->add(1235);
+  tree->add(11);
+  tree->add(325);
+  tree->add(294);
+  tree->add(37);
+  tree->add(35);
+  tree->add(3224);
+  tree->add(435);
+  tree->add(190);
+  tree->add(1024);
+  tree->add(749);
+  tree->add(1);
+  tree->add(1456);
+  tree->add(397563);
+  tree->add(14);
+  tree->getInOrderTraversal(tree->root);
+  node* root = tree->root;
+  int expected = 10;
+  int actual = root->left->right->key;
+  if (expected != actual) {
+    return 1;
+  }
   return 0;
 }
 
@@ -75,5 +93,11 @@ int main(){
     cout << "Inorder traversal is broken" << endl;
   }
   val = testInsertion1();
+  if (val == 0) {
+    cout << "testInsertion1 works" << endl;
+  }else {
+    cout << "testInsertion1 is broken" << endl;
+  }
+  val = testInsertion2();
   return 1;
 }

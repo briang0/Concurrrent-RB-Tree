@@ -168,12 +168,12 @@ void RedBlackTree::add(int key) {
       } else {
         r = r->left;
       }
-      cur->parent = toAdd;
-      if (toAdd->key < cur->key) {
-        toAdd->right = cur;
-      }else {
-        toAdd->left = cur;
-      }
+    }
+    cur->parent = toAdd;
+    if (toAdd->key < cur->key) {
+      toAdd->right = cur;
+    }else {
+      toAdd->left = cur;
     }
   }
   fix(cur);
