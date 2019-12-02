@@ -9,12 +9,7 @@ public:
   node* right;
   bool color;
 
-  node (int inKey, node* inParent, node* inLeft, node* inRight) {
-    key = inKey;
-    parent = inParent;
-    left = inLeft;
-    right = inRight;
-  }
+  node (int inKey, node* inParent, node* inLeft, node* inRight);
 
 };
 

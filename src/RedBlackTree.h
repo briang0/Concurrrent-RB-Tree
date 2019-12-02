@@ -21,7 +21,7 @@ public:
 
   node* insertHelper(node*& root, node*& toInsert);
 
-  void insert();
+  void insert(node*& toInsert);
 
   void insertKey(int key);
 
@@ -36,6 +36,8 @@ public:
   void inOrderTraversal(vector<node*>* order, node* cur_root);
 
   vector<node*>* getInOrderTraversal(node* inRoot);
+
+  void add(int key);
 
   node* getRoot();
 
