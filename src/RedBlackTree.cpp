@@ -30,7 +30,34 @@ public:
 
   void add(int key);
 
+  node* searchHelper(int key, node* head);
+
+  int search(int key);
+
+
 };
+
+node* RedBlackTree::searchHelper(int key, node* head) {
+  if (head->key == key) {
+    return head;
+  }else if (head->key < key && head->left != NULL) {
+    return searchHelper(key, head->left);
+  }else if (head->key > key && head->right != NULL) {
+    return searchHelper(key, head->right);
+  }else {
+    return NULL;
+  }
+}
+
+int RedBlackTree::search(int key) {
+  int* output = (int*) malloc(9 * sizeof(int));
+  node* found = searchHelper(key, root);
+  if (found == NULL) {
+    return -1;
+  } else {
+    return found->color;
+  }
+}
 
 void RedBlackTree::inOrderTraversal(vector<node*>* order, node* cur_root) {
   if (cur_root == NULL) {

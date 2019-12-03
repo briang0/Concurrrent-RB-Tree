@@ -31,6 +31,10 @@ public:
 
   void add(int key);
 
+  node* searchHelper(int key, node* head);
+
+  int search(int key);
+
 };
 
 #endif
