@@ -8,7 +8,6 @@ using namespace std;
 class RedBlackTree {
 public:
   node* root;
-  node* toAdd;
 
   RedBlackTree(node* inRoot) {
     root = inRoot;
@@ -16,10 +15,9 @@ public:
 
   RedBlackTree() {
     root = NULL;
-    toAdd = NULL;
   }
 
-  void fix(node*& toEnter);
+  void fix(node*& z);
 
   void leftRotate(node*& toRotate);
 

@@ -75,10 +75,11 @@ int testInsertion2() {
   tree->add(1456);
   tree->add(397563);
   tree->add(14);
+  tree->add(11);
   tree->getInOrderTraversal(tree->root);
   node* root = tree->root;
-  int expected = 10;
-  int actual = root->left->right->key;
+  int expected = 1456;
+  int actual = root->right->right->left->parent->right->left->key;
   if (expected != actual) {
     return 1;
   }
@@ -99,5 +100,10 @@ int main(){
     cout << "testInsertion1 is broken" << endl;
   }
   val = testInsertion2();
+  if (val == 0) {
+    cout << "testInsertion2 works" << endl;
+  }else {
+    cout << "testInsertion2 is broken" << endl;
+  }
   return 1;
 }

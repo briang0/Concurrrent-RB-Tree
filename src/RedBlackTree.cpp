@@ -4,12 +4,9 @@
 #include "Node.h"
 using namespace std;
 
-node* nil = new node(-1, NULL, NULL, NULL);
-
 class RedBlackTree {
 public:
   node* root;
-  node* toAdd;
 
   RedBlackTree(node* inRoot) {
     root = inRoot;
@@ -17,7 +14,6 @@ public:
 
   RedBlackTree() {
     root = NULL;
-    toAdd = NULL;
   }
 
   void fix(node *&toEnter);
@@ -53,53 +49,55 @@ vector<node*>* RedBlackTree::getInOrderTraversal(node* inRoot) {
   return order;
 }
 
-void RedBlackTree::fix(node *&toEnter) {
-  node* cur = NULL;
-  if (root == toEnter) {
-    toEnter->color = false;
-    return;
-  }
-  while (toEnter->parent != NULL && toEnter->parent->color) {
-    node* grandparent = toEnter->parent->parent;
-    if (grandparent->left == toEnter->parent) {
-      if (grandparent->right != NULL) {
-        cur = grandparent->right;
-        if (cur->color) {
-          cur->color = false;
-          toEnter->parent->color = false;
-          grandparent->color = true;
-          toEnter = grandparent;
+void RedBlackTree::fix(node *&n) {
+  node *p, *grandparent;
+
+  while (n != root && n->color != false && n->parent->color) {
+    p = n->parent;
+    grandparent = n->parent->parent;
+    if (p == grandparent->left) {
+        node *uncle = grandparent->right;
+        if (uncle != NULL && uncle->color) {
+            grandparent->color = true;
+            p->color = false;
+            uncle->color = false;
+            n = grandparent;
+        } else {
+            if (n == p->right) {
+                leftRotate(p);
+                p = n->parent;
+                n = p;
+            }
+            rightRotate(grandparent);
+            bool temp = p->color;
+            p->color = grandparent->color;
+            grandparent->color = temp;
+            n = p;
         }
-      } else {
-        if (toEnter->parent->right == toEnter) {
-          toEnter = toEnter->parent;
-          leftRotate(toEnter);
-        }
-        toEnter->parent->color = false;
-        grandparent->color = true;
-        rightRotate(grandparent);
-      }
     } else {
-      if (grandparent->left != NULL) {
-        cur = grandparent->left;
-        if (cur->color) {
-          toEnter->parent->color = false;
-          cur->color = false;
-          grandparent->color = true;
-          toEnter = grandparent;
+        node *uncle = grandparent->left;
+        if (uncle != NULL && uncle->color == true) {
+            grandparent->color = true;
+            p->color = false;
+            uncle->color = false;
+            n = grandparent;
         }
-      } else {
-        if (toEnter->parent->left == toEnter) {
-          toEnter = toEnter->parent;
-          rightRotate(toEnter);
+        else {
+            if (n == p->left) {
+                rightRotate(p);
+                n = p;
+                p = n->parent;
+            }
+            leftRotate(grandparent);
+            bool temp = p->color;
+            p->color = grandparent->color;
+            grandparent->color = temp;
+            n = p;
         }
-        toEnter->parent->color = false;
-        grandparent->color = true;
-        leftRotate(grandparent);
-      }
     }
-    root->color = false;
-  }
+}
+
+root->color = false;
 }
 
 void RedBlackTree::leftRotate(node *&toRotate) {
