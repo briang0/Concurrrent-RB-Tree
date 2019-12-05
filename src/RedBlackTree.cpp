@@ -24,6 +24,8 @@ public:
 
   void remove();
 
+  void preorder(node* head);
+
   void inOrderTraversal(vector<node*>* order, node* cur_root);
 
   vector<node*>* getInOrderTraversal(node* inRoot);
@@ -75,6 +77,17 @@ vector<node*>* RedBlackTree::getInOrderTraversal(node* inRoot) {
   vector<node*>* order = new vector<node*>();
   inOrderTraversal(order, inRoot);
   return order;
+}
+
+void RedBlackTree::preorder(node* head) {
+  if (head == NULL) {
+    return;
+  }
+
+  cout << head->key << ":" << head->color << ", ";
+
+  preorder(head->left);
+  preorder(head->right);
 }
 
 void RedBlackTree::fix(node *&n) {
@@ -191,10 +204,8 @@ void RedBlackTree::add(int key) {
       toAdd = r;
       if (r->key < cur->key) {
         r = r->right;
-      } else if (r->key > cur->key) {
-        r = r->left;
       } else {
-        return;
+        r = r->left;
       }
     }
     cur->parent = toAdd;

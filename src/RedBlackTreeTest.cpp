@@ -122,14 +122,16 @@ int testSearch1() {
 int megaSearchInsert() {
   srand(time(NULL));
   RedBlackTree* tree = new RedBlackTree();
-  int numNodes = 100;
+  int numNodes = 15;
   int maxNodeKey = 1000;
   int minKey = 0;
   int nodeToFind = rand() % numNodes;
   int targetKey = -1;
   for (int i = 0; i < numNodes; i++) {
     int key = rand() % maxNodeKey + minKey;
-    cout << "i: " << i << ", key: " << key << endl;
+    cout << "i: " << i << ", key: " << key << " tree: ";
+    tree->preorder(tree->root);
+    cout << endl;
     tree->add(key);
     if (i == nodeToFind) {
       targetKey = key;

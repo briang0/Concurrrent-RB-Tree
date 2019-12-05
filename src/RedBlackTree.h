@@ -25,6 +25,8 @@ public:
 
   void remove();
 
+  void preorder(node* head);
+
   void inOrderTraversal(vector<node*>* order, node* cur_root);
 
   vector<node*>* getInOrderTraversal(node* inRoot);
