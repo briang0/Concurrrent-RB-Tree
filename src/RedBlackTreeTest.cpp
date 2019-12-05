@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include <iostream>
 #include <vector>
 #include "Node.h"
@@ -47,7 +49,6 @@ int testInsertion1() {
   tree->add(6);
   tree->add(4);
   tree->add(7);
-  tree->getInOrderTraversal(tree->root);
   node* root = tree->root;
   int expected = 10;
   int actual = root->left->right->key;
@@ -76,7 +77,6 @@ int testInsertion2() {
   tree->add(397563);
   tree->add(14);
   tree->add(11);
-  tree->getInOrderTraversal(tree->root);
   node* root = tree->root;
   int expected = 1456;
   int actual = root->right->right->left->parent->right->left->key;
@@ -84,6 +84,59 @@ int testInsertion2() {
     return 1;
   }
   return 0;
+}
+
+int testSearch1() {
+  RedBlackTree* tree = new RedBlackTree();
+  tree->add(5);
+  tree->add(2);
+  tree->add(6);
+  tree->add(0);
+  tree->add(1);
+  tree->add(2);
+  tree->add(10);
+  int expectedFive = 0;
+  int actualFive = tree->search(5);
+  int expectedTen = 1;
+  int actualTen = tree->search(10);
+  int expectedTwo = 0;
+  int actualTwo = tree->search(2);
+  int expectedThree = -1;
+  int actualThree = tree->search(3);
+  if (expectedFive != actualFive) {
+    return 1;
+  }
+  if (expectedTen != actualTen) {
+    cout << "Actual 10: " << actualTen << endl;
+    return 2;
+  }
+  if (expectedTwo != actualTwo) {
+    return 3;
+  }
+  if (expectedThree != actualThree) {
+    return 4;
+  }
+  return 0;
+}
+
+int megaSearchInsert() {
+  srand(time(NULL));
+  RedBlackTree* tree = new RedBlackTree();
+  int numNodes = 100;
+  int maxNodeKey = 1000;
+  int minKey = 0;
+  int nodeToFind = rand() % numNodes;
+  int targetKey = -1;
+  for (int i = 0; i < numNodes; i++) {
+    int key = rand() % maxNodeKey + minKey;
+    cout << "i: " << i << ", key: " << key << endl;
+    tree->add(key);
+    if (i == nodeToFind) {
+      targetKey = key;
+    }
+  }
+  int s = tree->search(targetKey);
+  cout << "Target: " << targetKey << " Output: " << s << endl;
 }
 
 int main(){
@@ -105,5 +158,18 @@ int main(){
   }else {
     cout << "testInsertion2 is broken" << endl;
   }
+  val = testSearch1();
+  if (val == 0) {
+    cout << "testSearch1 works" << endl;
+  }else if (val == 1) {
+    cout << "testSearch1 is broken; expectedFive failed" << endl;
+  }else if (val == 2) {
+    cout << "testSearch1 is broken; expectedTen failed" << endl;
+  }else if (val == 3) {
+    cout << "testSearch1 is broken; expectedTwo failed" << endl;
+  }else if (val == 3) {
+    cout << "testSearch1 is broken; expectedThree failed" << endl;
+  }
+  megaSearchInsert();
   return 1;
 }

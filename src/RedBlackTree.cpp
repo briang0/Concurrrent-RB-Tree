@@ -40,13 +40,14 @@ public:
 node* RedBlackTree::searchHelper(int key, node* head) {
   if (head->key == key) {
     return head;
-  }else if (head->key < key && head->left != NULL) {
-    return searchHelper(key, head->left);
-  }else if (head->key > key && head->right != NULL) {
-    return searchHelper(key, head->right);
-  }else {
-    return NULL;
   }
+  if (head->key < key && head->right != NULL) {
+    return searchHelper(key, head->right);
+  }
+  if (head->key > key && head->left != NULL) {
+    return searchHelper(key, head->left);
+  }
+  return NULL;
 }
 
 int RedBlackTree::search(int key) {
@@ -190,8 +191,10 @@ void RedBlackTree::add(int key) {
       toAdd = r;
       if (r->key < cur->key) {
         r = r->right;
-      } else {
+      } else if (r->key > cur->key) {
         r = r->left;
+      } else {
+        return;
       }
     }
     cur->parent = toAdd;
