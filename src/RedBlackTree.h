@@ -31,6 +31,8 @@ public:
 
   vector<node*>* getInOrderTraversal(node* inRoot);
 
+  node* btAdd(node* r, node* n);
+
   void add(int key);
 
   node* searchHelper(int key, node* head);

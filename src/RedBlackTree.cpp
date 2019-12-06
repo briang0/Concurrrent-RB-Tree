@@ -30,6 +30,8 @@ public:
 
   vector<node*>* getInOrderTraversal(node* inRoot);
 
+  node* btAdd(node* r, node* n);
+
   void add(int key);
 
   node* searchHelper(int key, node* head);
@@ -106,8 +108,8 @@ void RedBlackTree::fix(node *&n) {
         } else {
             if (n == p->right) {
                 leftRotate(p);
-                p = n->parent;
                 n = p;
+                p = n->parent;
             }
             rightRotate(grandparent);
             bool temp = p->color;
@@ -142,78 +144,60 @@ root->color = false;
 }
 
 void RedBlackTree::leftRotate(node *&toRotate) {
+  node* right = toRotate->right;
+  toRotate->right = right->left;
   if (toRotate->right != NULL) {
-    node* right = toRotate->right;
-    if (right->left != NULL) {
-      toRotate->right = right->left;
-      right->left->parent = toRotate;
-    } else {
-      toRotate->right = NULL;
-    }
-    if (toRotate->parent != NULL) {
-      right->parent = toRotate->parent;
-    }
-    if (toRotate->parent == NULL) {
-      root = right;
-    } else {
-      if (toRotate == toRotate->parent->left) {
-        toRotate->parent->left = right;
-      } else {
-        toRotate->parent->right = right;
-      }
-    }
-    right->left = toRotate;
-    toRotate->parent = right;
+    toRotate->right->parent = toRotate;
   }
+  right->parent = toRotate->parent;
+  if(toRotate->parent == NULL) {
+    root = right;
+  } else if (toRotate == toRotate->parent->left) {
+    toRotate->parent->left = right;
+  } else {
+    toRotate->parent->right = right;
+  }
+  right->left = toRotate;
+  toRotate->parent = right;
 }
 
 void RedBlackTree::rightRotate(node*& toRotate) {
-  if (toRotate->left != NULL) {
-    node* left = toRotate->left;
-    if (left->right != NULL) {
-      toRotate->left = left->right;
-      left->right->parent = toRotate;
-    } else {
-      toRotate->left = NULL;
-    }
-    if (toRotate->parent != NULL) {
-      left->parent = toRotate->parent;
-    }
-    if (toRotate->parent == NULL) {
-      root = left;
-    } else {
-      if (toRotate == toRotate->parent->left) {
-        toRotate->parent->left = left;
-      } else {
-        toRotate->parent->right = left;
-      }
-    }
-    left->right = toRotate;
-    toRotate->parent = left;
+  node* left = toRotate->left;
+  toRotate->left = left->right;
+  if (toRotate->right != NULL) {
+    toRotate->left->parent = toRotate;
   }
+  left->parent = toRotate->parent;
+  if (toRotate->parent != NULL) {
+    left->parent = toRotate->parent;
+  }
+  if (toRotate->parent == NULL) {
+    root = left;
+  } else if (toRotate == toRotate->parent->left) {
+    toRotate->parent->left = left;
+  } else {
+    toRotate->parent->right = left;
+  }
+  left->right = toRotate;
+  toRotate->parent = left;
+}
+
+node* RedBlackTree::btAdd(node* root, node* n) {
+  if (root == NULL) {
+    return n;
+  }
+  if (n->key < root->key) {
+    root->left = btAdd(root->left, n);
+    root->left->parent = root;
+  } else if (n->key > root->key) {
+    root->right = btAdd(root->right, n);
+    root->right->parent = root;
+  }
+  return root;
 }
 
 void RedBlackTree::add(int key) {
-  node* cur = new node(key, NULL, NULL, NULL);
-  node* r = root;
-  node* toAdd = NULL;
-  if (root == NULL) {
-    root = cur;
-  } else {
-    while (r != NULL) {
-      toAdd = r;
-      if (r->key < cur->key) {
-        r = r->right;
-      } else {
-        r = r->left;
-      }
-    }
-    cur->parent = toAdd;
-    if (toAdd->key < cur->key) {
-      toAdd->right = cur;
-    }else {
-      toAdd->left = cur;
-    }
-  }
-  fix(cur);
+  node* n = new node(key, NULL, NULL, NULL);
+  root = btAdd(root, n);
+  fix(n);
 }

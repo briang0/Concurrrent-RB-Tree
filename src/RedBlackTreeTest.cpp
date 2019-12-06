@@ -76,7 +76,6 @@ int testInsertion2() {
   tree->add(1456);
   tree->add(397563);
   tree->add(14);
-  tree->add(11);
   node* root = tree->root;
   int expected = 1456;
   int actual = root->right->right->left->parent->right->left->key;
@@ -89,7 +88,6 @@ int testInsertion2() {
 int testSearch1() {
   RedBlackTree* tree = new RedBlackTree();
   tree->add(5);
-  tree->add(2);
   tree->add(6);
   tree->add(0);
   tree->add(1);
@@ -99,7 +97,7 @@ int testSearch1() {
   int actualFive = tree->search(5);
   int expectedTen = 1;
   int actualTen = tree->search(10);
-  int expectedTwo = 0;
+  int expectedTwo = 1;
   int actualTwo = tree->search(2);
   int expectedThree = -1;
   int actualThree = tree->search(3);
@@ -122,23 +120,23 @@ int testSearch1() {
 int megaSearchInsert() {
   srand(time(NULL));
   RedBlackTree* tree = new RedBlackTree();
-  int numNodes = 15;
-  int maxNodeKey = 1000;
+  int numNodes = 1000;
+  int maxNodeKey = 2147483627;
   int minKey = 0;
   int nodeToFind = rand() % numNodes;
   int targetKey = -1;
   for (int i = 0; i < numNodes; i++) {
     int key = rand() % maxNodeKey + minKey;
-    cout << "i: " << i << ", key: " << key << " tree: ";
-    tree->preorder(tree->root);
-    cout << endl;
     tree->add(key);
     if (i == nodeToFind) {
       targetKey = key;
     }
   }
   int s = tree->search(targetKey);
-  cout << "Target: " << targetKey << " Output: " << s << endl;
+  if (s != -1) {
+    return 0;
+  }
+  return 1;
 }
 
 int main(){
@@ -172,6 +170,11 @@ int main(){
   }else if (val == 3) {
     cout << "testSearch1 is broken; expectedThree failed" << endl;
   }
-  megaSearchInsert();
+  val = megaSearchInsert();
+  if (val == 0) {
+    cout << "megaSearchInsert works";
+  } else {
+    cout << "megaSearchinsert is broken" << endl;
+  }
   return 1;
 }
