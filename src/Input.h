@@ -9,7 +9,7 @@
 
 using namespace std;
 
-vector<vector<string>> getTestsFromFile(string);
+int getTestsFromFile(string);
 
 vector<string> getAllInitalNodeValues(string);
 
