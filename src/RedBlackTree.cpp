@@ -16,6 +16,8 @@ public:
     root = NULL;
   }
 
+  void fixDeletion(node* n);
+
   void fix(node *&toEnter);
 
   void leftRotate(node *&toRotate);
@@ -29,6 +31,10 @@ public:
   void inOrderTraversal(vector<node*>* order, node* cur_root);
 
   vector<node*>* getInOrderTraversal(node* inRoot);
+
+  void transplant(node* u, node* v);
+
+  void remove(int key);
 
   node* btAdd(node* r, node* n);
 
@@ -90,6 +96,65 @@ void RedBlackTree::preorder(node* head) {
 
   preorder(head->left);
   preorder(head->right);
+}
+
+void RedBlackTree::fixDeletion(node* n) {
+  node* a;
+  while (n != root && !n->color) {
+    if (n == n->parent->left) {
+      a = n->parent->right;
+      if (a->color) {
+        a->color = false;
+        n->parent->color = true;
+        leftRotate(n->parent);
+        a = n->parent->right;
+      }
+      if (!a->left->color && !a->right->color) {
+        a->color = true;
+        n = n->parent;
+      }
+      else {
+        if (!a->right->color) {
+          a->left->color = false;
+          a->color = true;
+          rightRotate(a);
+          a = n->parent->right;
+        }
+        a->color = n->parent->color;
+        n->parent->color = false;
+        a->right->color = false;
+        leftRotate(n->parent);
+        n = root;
+      }
+    }
+    else {
+      a = n->parent->left;
+      if (a->color) {
+        a->color = false;
+        n->parent->color = true;
+        rightRotate(n->parent);
+        a = n->parent->left;
+      }
+      if (!a->right->color && !a->right->color) {
+        a->color = true;
+        n = n->parent;
+      }
+      else {
+        if (!a->left->color) {
+          a->right->color = false;
+          a->color = true;
+          leftRotate(a);
+          a = n->parent->left;
+        }
+        a->color = n->parent->color;
+        n->parent->color = false;
+        a->left->color = false;
+        rightRotate(n->parent);
+        n = root;
+      }
+    }
+  }
+  n->color = false;
 }
 
 void RedBlackTree::fix(node *&n) {
@@ -180,6 +245,69 @@ void RedBlackTree::rightRotate(node*& toRotate) {
   }
   left->right = toRotate;
   toRotate->parent = left;
+}
+
+void RedBlackTree::transplant(node* u, node* v) {
+  if (u->parent == NULL) {
+    root = v;
+  } else if (u == u->parent->left) {
+    u->parent->left = v;
+  } else {
+    u->parent->right = v;
+  }
+  v->parent = u->parent;
+}
+
+void RedBlackTree::remove(int key) {
+  node* r = root;
+  node* target = NULL;
+  node* a;
+  node* b;
+  while (r != NULL) {
+    cout << "sad" << endl;
+    if (r->key == key) {
+      target = r;
+    } if (r->key <= key) {
+      r = r->right;
+    } else {
+      r = r->left;
+    }
+  }
+  if (target == NULL) {
+    return;
+  }
+
+  b = target;
+  bool temp = target->color;
+  if (target->left == NULL) {
+    a = target->right;
+    transplant(target, target->right);
+  } else if (target->right == NULL) {
+    a= target->left;
+    transplant(target, target->left);
+  } else {
+    b = target->right;
+    while (b->left != NULL) {
+      cout << "rad" << endl;
+      b = b->left;
+    }
+    temp = b->color;
+    a = b->right;
+    if (b->parent == target) {
+      a->parent = b;
+    } else {
+      transplant(b, b->right);
+      b->right = target->right;
+      b->right->parent = b;
+    }
+    transplant(target, b);
+    b->left = target->left;
+    b->left->parent = b;
+    b->color = target->color;
+  }
+  if (!temp) {
+    fixDeletion(a);
+  }
 }
 
 node* RedBlackTree::btAdd(node* root, node* n) {

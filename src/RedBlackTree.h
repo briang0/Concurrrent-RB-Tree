@@ -23,7 +23,9 @@ public:
 
   void rightRotate(node*& toRotate);
 
-  void remove();
+  void remove(int key);
+
+  void transplant(node* u, node* v);
 
   void preorder(node* head);
 

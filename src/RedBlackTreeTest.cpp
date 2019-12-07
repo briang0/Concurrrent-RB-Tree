@@ -139,6 +139,18 @@ int megaSearchInsert() {
   return 1;
 }
 
+int deletionTest1() {
+  RedBlackTree* tree = new RedBlackTree();
+  tree->add(10);
+  tree->add(12);
+  tree->add(11);
+  tree->add(6);
+  tree->add(4);
+  tree->add(7);
+  tree->remove(6);
+  tree->preorder(tree->root);
+}
+
 int main(){
   int val = testInorderTraversal();
   if (val == 0) {
@@ -172,9 +184,10 @@ int main(){
   }
   val = megaSearchInsert();
   if (val == 0) {
-    cout << "megaSearchInsert works";
+    cout << "megaSearchInsert works" << endl;
   } else {
     cout << "megaSearchinsert is broken" << endl;
   }
+  deletionTest1();
   return 1;
 }
