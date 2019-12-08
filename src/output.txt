@@ -1,0 +1,134 @@
+Test #1
+search(1)->true, performed by thread 140041152628480
+search(80)->false, performed by thread 140041135720192
+34b,1b,f,f,97r,45b,f,80r,f,f,110b,f,f,
+Time with initial tree construction: 1ms
+Time without initial tree construction: 1ms
+
+Test #2
+search(1)->false, performed by thread 140041110357760
+search(80)->false, performed by thread 140041024046848
+search(163)->true, performed by thread 140041007138560
+search(167)->true, performed by thread 140040990230272
+160b,80r,26b,24r,f,f,f,85b,f,f,167r,163b,162r,f,f,f,177b,f,f,
+Time with initial tree construction: 1ms
+Time without initial tree construction: 1ms
+
+Test #3
+search(1)->false, performed by thread 140040956413696
+search(80)->false, performed by thread 140040939505408
+search(163)->false, performed by thread 140040922597120
+search(167)->false, performed by thread 140040905688832
+search(92)->true, performed by thread 140040888780544
+search(188)->true, performed by thread 140040871872256
+search(100)->false, performed by thread 140040854963968
+132b,64b,40b,24r,f,f,56r,f,f,85r,80b,f,f,92b,f,100r,f,f,161b,150b,f,150r,f,f,179r,164b,162r,f,f,f,190b,188r,f,f,200r,f,f,
+Time with initial tree construction: 3ms
+Time without initial tree construction: 3ms
+
+Test #4
+search(1)->false, performed by thread 140040804239104
+search(80)->false, performed by thread 140040787330816
+search(163)->false, performed by thread 140040770422528
+search(167)->false, performed by thread 140040753514240
+search(92)->false, performed by thread 140040736605952
+search(188)->false, performed by thread 140040719697664
+search(100)->false, performed by thread 140040702789376
+search(191)->true, performed by thread 140040685881088
+search(81)->true, performed by thread 140040668972800
+107b,53b,24r,18b,f,22r,f,f,46b,30r,f,f,50r,f,f,81r,80b,56r,f,f,f,85b,f,100r,f,f,152b,150b,124r,f,f,150r,f,f,191r,155b,f,162r,f,f,200b,200r,f,f,250r,f,f,
+Time with initial tree construction: 3ms
+Time without initial tree construction: 3ms
+
+Test #5
+search(1)->true, performed by thread 140040567523072
+search(80)->false, performed by thread 140040550614784
+search(163)->true, performed by thread 140040533706496
+search(167)->false, performed by thread 140040516798208
+search(92)->false, performed by thread 140040499889920
+search(188)->false, performed by thread 140040482981632
+search(100)->false, performed by thread 140040466073344
+search(191)->false, performed by thread 140040449165056
+search(81)->false, performed by thread 140040432256768
+search(1)->true, performed by thread 140040415348480
+search(14)->true, performed by thread 140040398440192
+search(74)->true, performed by thread 140040381531904
+search(100)->true, performed by thread 140040364623616
+51b,23b,6r,1b,f,f,14b,f,22r,f,f,30r,24b,f,25r,f,f,35b,f,50r,f,f,133r,80b,74b,56r,f,f,f,85b,f,100r,f,f,162b,150r,139b,f,f,150b,f,150r,f,f,200r,163b,f,163r,f,f,250b,f,f,
+Time with initial tree construction: 4ms
+Time without initial tree construction: 4ms
+
+Test #6
+search(1)->false, performed by thread 140040246265600
+search(80)->false, performed by thread 140040229357312
+search(163)->false, performed by thread 140040212449024
+search(167)->true, performed by thread 140040195540736
+search(92)->true, performed by thread 140040178632448
+search(188)->false, performed by thread 140040161724160
+search(100)->false, performed by thread 140040144815872
+search(191)->false, performed by thread 140040127907584
+search(81)->false, performed by thread 140040110999296
+search(1)->false, performed by thread 140040094091008
+search(14)->true, performed by thread 140040077182720
+search(74)->false, performed by thread 140040060274432
+search(100)->true, performed by thread 140040043366144
+search(157)->true, performed by thread 140040026457856
+search(183)->true, performed by thread 140040009549568
+search(14)->true, performed by thread 140039992641280
+162b,78b,24r,7b,2b,f,f,14b,f,22r,f,f,56b,30r,24b,f,25r,f,f,50b,f,f,76b,f,f,105r,85b,80b,f,f,92b,f,100r,f,f,150b,119r,116b,f,f,150b,f,f,150r,150b,f,f,157b,150r,f,f,f,180b,173b,163b,162r,f,f,167r,f,f,175b,f,f,190b,185r,183b,f,f,185b,f,f,200r,200b,f,f,250b,f,250r,f,f,
+Time with initial tree construction: 5ms
+Time without initial tree construction: 5ms
+
+Test #7
+search(1)->false, performed by thread 140039857374976
+search(80)->false, performed by thread 140039840466688
+search(163)->false, performed by thread 140039823558400
+search(167)->false, performed by thread 140039806650112
+search(92)->true, performed by thread 140039789741824
+search(188)->false, performed by thread 140039772833536
+search(100)->false, performed by thread 140039755925248
+search(191)->false, performed by thread 140039739016960
+search(81)->false, performed by thread 140039722108672
+search(1)->false, performed by thread 140039705200384
+search(14)->false, performed by thread 140039688292096
+search(74)->false, performed by thread 140039671383808
+search(100)->true, performed by thread 140039654475520
+search(157)->false, performed by thread 140039637567232
+search(183)->false, performed by thread 140039620658944
+search(14)->false, performed by thread 140039603750656
+search(101)->true, performed by thread 140039586842368
+search(163)->false, performed by thread 140039569934080
+search(6)->true, performed by thread 140039553025792
+96b,44b,21r,9b,6b,f,f,19b,f,f,24b,22b,f,f,30r,25b,f,25r,f,f,41b,f,f,89b,75r,56b,50r,f,f,72r,f,f,80b,f,85r,f,f,92b,f,f,133b,117b,101b,100r,f,f,f,126b,f,f,162r,150b,146r,145b,f,f,150b,f,f,150r,150b,f,f,150b,f,150r,f,f,186b,163b,163r,f,f,185r,f,f,200r,197b,f,f,250b,200r,f,f,250r,f,f,
+Time with initial tree construction: 4ms
+Time without initial tree construction: 4ms
+
+Test #8
+search(1)->false, performed by thread 140039400851200
+search(80)->false, performed by thread 140039383942912
+search(163)->false, performed by thread 140039367034624
+search(167)->false, performed by thread 140039350126336
+search(92)->true, performed by thread 140039333218048
+search(188)->false, performed by thread 140039316309760
+search(100)->false, performed by thread 140039299401472
+search(191)->false, performed by thread 140039282493184
+search(81)->false, performed by thread 140039265584896
+search(1)->false, performed by thread 140039248676608
+search(14)->false, performed by thread 140039231768320
+search(74)->false, performed by thread 140039214860032
+search(100)->true, performed by thread 140039197951744
+search(157)->true, performed by thread 140039181043456
+search(183)->false, performed by thread 140039164135168
+search(14)->false, performed by thread 140039147226880
+search(101)->true, performed by thread 140039130318592
+search(163)->false, performed by thread 140039113410304
+search(6)->true, performed by thread 140039096502016
+search(30)->true, performed by thread 140039079593728
+search(105)->true, performed by thread 140039062685440
+search(250)->true, performed by thread 140039045777152
+119b,88r,43b,22r,8b,4b,2r,f,f,6r,f,f,12b,f,f,36b,25r,24b,22r,f,f,f,30b,25r,f,f,30r,f,f,37b,f,f,54b,48r,43b,f,f,50b,f,50r,f,f,68r,56b,f,f,80b,76r,f,f,85r,f,f,102b,97b,92b,f,f,100b,99r,f,f,101r,f,f,105b,104b,f,f,116b,f,f,162r,139b,131b,125b,f,f,137b,f,f,150r,144b,142b,f,f,150b,f,f,156b,150r,150b,f,f,150b,150r,f,f,150r,f,f,157b,f,159r,f,f,187b,180b,163r,162b,f,f,178b,163r,f,f,f,186b,f,f,200b,192r,189b,f,f,194b,f,f,250r,200b,f,f,250b,f,250r,f,f,
+Time with initial tree construction: 6ms
+Time without initial tree construction: 6ms
+
+Time with initial tree construction: 27ms
+Time without initial tree construction: 27ms

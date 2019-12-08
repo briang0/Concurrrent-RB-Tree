@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <vector>
+#include <string.h>
 #include "Node.h"
 #include "semaphore.h"
 #include "pthread.h"
@@ -19,37 +20,42 @@ public:
     root = NULL;
   }
 
-  void fixDeletion(node* n);
+  void fixDeletion(node*);
 
-  void fix(node *&toEnter);
+  void fix(node*);
 
-  void leftRotate(node *&toRotate);
+  void leftRotate(node*);
 
-  void rightRotate(node *&toRotate);
+  void rightRotate(node*);
 
   void remove();
 
-  void preorder(node* head);
+  void preorder(node*, string*);
 
-  void inOrderTraversal(vector<node*>* order, node* cur_root);
+  void inOrderTraversal(vector<node*>*, node*);
 
-  vector<node*>* getInOrderTraversal(node* inRoot);
+  vector<node*>* getInOrderTraversal(node*);
 
-  void transplant(node* u, node* v);
+  void transplant(node*, node*);
 
-  void remove(int key);
+  void remove(int);
 
-  node* btAdd(node* r, node* n);
+  node* btAdd(node*, node*);
 
-  void add(int key);
+  void add(int);
 
-  node* searchHelper(int key, node* head);
+  node* searchHelper(int, node*);
 
-  int search(int key);
+  int search(int);
 
 
 };
 
+// This function recursively searches for a node with a key.
+// Params: int key: The key to be searched for
+//         node* head: The starting point of the search
+//Output:
+//The node whose key is equal to the input key. NULL if not found.
 node* RedBlackTree::searchHelper(int key, node* head) {
   if (head->key == key) {
     return head;
@@ -63,6 +69,11 @@ node* RedBlackTree::searchHelper(int key, node* head) {
   return NULL;
 }
 
+// The driver function for searchHelper.
+// Input: int key: the key to be searched for
+// Output: 0 if the found node is black
+//         1 if the found node is red
+//         -1 if the node was not found
 int RedBlackTree::search(int key) {
   int* output = (int*) malloc(9 * sizeof(int));
   node* found = searchHelper(key, root);
@@ -73,6 +84,9 @@ int RedBlackTree::search(int key) {
   }
 }
 
+// Prints out the in order traversal of the tree
+// Input: vector<node*>* order: the in order traversal
+//        node* cur_root: The beginning node
 void RedBlackTree::inOrderTraversal(vector<node*>* order, node* cur_root) {
   if (cur_root == NULL) {
     return;
@@ -84,23 +98,33 @@ void RedBlackTree::inOrderTraversal(vector<node*>* order, node* cur_root) {
   inOrderTraversal(order, cur_root->right);
 }
 
+// The driver for inOrderTraversal
+// Input: node* inRoot: The starting point of the traversal
+// Output: vector<node*>* of nodes in inorder.
 vector<node*>* RedBlackTree::getInOrderTraversal(node* inRoot) {
   vector<node*>* order = new vector<node*>();
   inOrderTraversal(order, inRoot);
   return order;
 }
 
-void RedBlackTree::preorder(node* head) {
+// A function to find the preorder traversal of the tree
+// Input: node* head: The starting point of the traversal
+//        string* out: The string that stores the traversal
+void RedBlackTree::preorder(node* head, string* out) {
   if (head == NULL) {
+    out->append("f,");
     return;
   }
 
-  cout << head->key << ":" << head->color << ", ";
+  out->append(to_string(head->key));
+  out->append((head->color ? "r," : "b,"));
 
-  preorder(head->left);
-  preorder(head->right);
+  preorder(head->left, out);
+  preorder(head->right, out);
 }
 
+// Fixes the tree after a deletion in order to follow red black tree rules
+// Input: node* n: The node that took the place of the deleted node
 void RedBlackTree::fixDeletion(node* n) {
   node* a;
   while (n != root && !n->color) {
@@ -160,7 +184,9 @@ void RedBlackTree::fixDeletion(node* n) {
   n->color = false;
 }
 
-void RedBlackTree::fix(node *&n) {
+// Repairs the tree after an insertion in order to follow red black tree rules
+// Input: node* n: The node added to the tree
+void RedBlackTree::fix(node *n) {
   node *p, *grandparent;
 
   while (n != root && n->color != false && n->parent->color) {
@@ -211,25 +237,29 @@ void RedBlackTree::fix(node *&n) {
 root->color = false;
 }
 
-void RedBlackTree::leftRotate(node *&toRotate) {
-  node* right = toRotate->right;
-  toRotate->right = right->left;
-  if (toRotate->right != NULL) {
-    toRotate->right->parent = toRotate;
+// Rotates n to the position of its left child
+// Input: node* n: The node to be rotated
+void RedBlackTree::leftRotate(node *n) {
+  node* right = n->right;
+  n->right = right->left;
+  if (n->right != NULL) {
+    n->right->parent = n;
   }
-  right->parent = toRotate->parent;
-  if(toRotate->parent == NULL) {
+  right->parent = n->parent;
+  if(n->parent == NULL) {
     root = right;
-  } else if (toRotate == toRotate->parent->left) {
-    toRotate->parent->left = right;
+  } else if (n == n->parent->left) {
+    n->parent->left = right;
   } else {
-    toRotate->parent->right = right;
+    n->parent->right = right;
   }
-  right->left = toRotate;
-  toRotate->parent = right;
+  right->left = n;
+  n->parent = right;
 }
 
-void RedBlackTree::rightRotate(node*& toRotate) {
+// Rotates n to the position of its right child
+// Input: node* n: The node to be rotated
+void RedBlackTree::rightRotate(node* toRotate) {
   node* left = toRotate->left;
   toRotate->left = left->right;
   if (toRotate->right != NULL) {
@@ -250,6 +280,9 @@ void RedBlackTree::rightRotate(node*& toRotate) {
   toRotate->parent = left;
 }
 
+// Replaces sub-trees starting at u and v
+// Input: u: The first sub-tree
+//        v: The second sub-tree
 void RedBlackTree::transplant(node* u, node* v) {
   if (u->parent == NULL) {
     root = v;
@@ -261,6 +294,8 @@ void RedBlackTree::transplant(node* u, node* v) {
   v->parent = u->parent;
 }
 
+// Deletes a node with the input key
+// Input: int key: The key of the node to be deleted
 void RedBlackTree::remove(int key) {
   node* r = root;
   node* target = NULL;
@@ -311,6 +346,9 @@ void RedBlackTree::remove(int key) {
   }
 }
 
+// Adds a node in the same manner as a BST
+// Input: node* root: The root node of the tree
+//        node* n: The node being inserted
 node* RedBlackTree::btAdd(node* root, node* n) {
   if (root == NULL) {
     return n;
@@ -325,6 +363,8 @@ node* RedBlackTree::btAdd(node* root, node* n) {
   return root;
 }
 
+// Adds the node of the input key to the tree. It creates a node and calls btAdd
+// Input: int key: The key of the node to be added.
 void RedBlackTree::add(int key) {
   node* n = new node(key, NULL, NULL, NULL);
   root = btAdd(root, n);

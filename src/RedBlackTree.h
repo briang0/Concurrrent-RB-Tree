@@ -27,7 +27,7 @@ public:
 
   void transplant(node* u, node* v);
 
-  void preorder(node* head);
+  void preorder(node* head, string* out);
 
   void inOrderTraversal(vector<node*>* order, node* cur_root);
 
