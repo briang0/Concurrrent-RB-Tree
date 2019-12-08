@@ -2,6 +2,9 @@
 #include <iostream>
 #include <vector>
 #include "Node.h"
+#include "semaphore.h"
+#include "pthread.h"
+
 using namespace std;
 
 class RedBlackTree {
@@ -264,7 +267,6 @@ void RedBlackTree::remove(int key) {
   node* a;
   node* b;
   while (r != NULL) {
-    cout << "sad" << endl;
     if (r->key == key) {
       target = r;
     } if (r->key <= key) {
@@ -288,7 +290,6 @@ void RedBlackTree::remove(int key) {
   } else {
     b = target->right;
     while (b->left != NULL) {
-      cout << "rad" << endl;
       b = b->left;
     }
     temp = b->color;
@@ -314,7 +315,7 @@ node* RedBlackTree::btAdd(node* root, node* n) {
   if (root == NULL) {
     return n;
   }
-  if (n->key < root->key) {
+  if (n->key <= root->key) {
     root->left = btAdd(root->left, n);
     root->left->parent = root;
   } else if (n->key > root->key) {

@@ -10,8 +10,6 @@ public:
 
   node (int inKey, node* inParent, node* inLeft, node* inRight);
 
-  bool isLeaf();
-
 };
 
 node::node (int inKey, node* inParent, node* inLeft, node* inRight) {
@@ -20,8 +18,4 @@ node::node (int inKey, node* inParent, node* inLeft, node* inRight) {
   left = inLeft;
   right = inRight;
   color = true;
-}
-
-bool node::isLeaf() {
-  return color == false && right == NULL && left == NULL;
 }
