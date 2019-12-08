@@ -1,5 +1,6 @@
 #include<stdio.h>
 
+// A simple class representing a tree node
 class node{
 public:
   int key;

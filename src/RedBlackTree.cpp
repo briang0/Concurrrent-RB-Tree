@@ -8,6 +8,7 @@
 
 using namespace std;
 
+// RedBlackTree object
 class RedBlackTree {
 public:
   node* root;

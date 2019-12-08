@@ -12,6 +12,7 @@
 
 using namespace std;
 
+// A structure containing all test informationm
 struct test_case {
   vector<int> preorderKeys;
   vector<bool> preorderColors;
@@ -20,6 +21,9 @@ struct test_case {
   vector<int*> operations;
 };
 
+// Parses out all operations and stores them in a test_case
+// Input: string line: The file line to be parsed.
+//        struct test_case*: The structure to store the data
 void getAllOperations(string line, struct test_case* test) {
   const char* delim = " ()\n\t||";
   char *str = strdup(line.c_str());
@@ -43,6 +47,9 @@ void getAllOperations(string line, struct test_case* test) {
   }
 }
 
+// Finds the number of reading and writing threads and stores them in a test_case
+// Input: string line: The current line in the file
+//        struct test_case* test: The current test to store the data in.
 void getAllThreadCounts(string line, struct test_case* test) {
   const char* delim = " \n\t:";
   char *str = strdup(line.c_str());
@@ -65,6 +72,9 @@ void getAllThreadCounts(string line, struct test_case* test) {
   }
 }
 
+// Gets the inital node values from a file and stores it in a test structure.
+// Input: string line: The current line of text.
+//        struct test_case *test: The test_case to store the data
 void getAllInitalNodeValues(string line, struct test_case *test) {
   const char* delim = ", \n\0";
   char *str = strdup(line.c_str());
@@ -83,6 +93,10 @@ void getAllInitalNodeValues(string line, struct test_case *test) {
   }
 }
 
+// Gets all test cases from a given file.
+// Input: string directory: The directory of the file to be read
+// Output: vector<struct test_case*>: a vector of struct test_cases that correspond
+//         to each test in the file
 vector<struct test_case*> getTestsFromFile(string directory) {
   ifstream in(directory);
   string buffer;

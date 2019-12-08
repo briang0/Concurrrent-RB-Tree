@@ -15,12 +15,15 @@ int numReaders = 0;
 int numWriters = 0;
 int numThreads = 0;
 
+// A structure for holding the parameters needed to make tree calls.
 struct args {
   int* op;
   RedBlackTree* tree;
   vector<string>* searchOutput;
 };
 
+// Modifies a red black tree concurrently. It can call either insert or delete.
+// Input: void* args: A struct args containing all necessary data to modify the tree.
 void *modify(void *args) {
   RedBlackTree* tree = ((struct args*) args)->tree;
   int* operation = ((struct args*) args)->op;
@@ -37,6 +40,8 @@ void *modify(void *args) {
   sem_post(&write);
 }
 
+// Concurrently searches for a node in the tree
+// Input: void* args: A struct args containing all necessary data to search for a node in a tree
 void *read(void *args) {
   RedBlackTree* tree = ((struct args*) args)->tree;
   int* operation = ((struct args*) args)->op;
@@ -66,12 +71,22 @@ void *read(void *args) {
   sem_post(&r_mutex);
 }
 
+// Constructs the tree from a given list of a nodes from a test
+// Input: test_case* test: A test_case structure containing all the data of the test, including the inital nodes
+//        RedBlackTree* tree: The tree being created
 void constructTree(test_case* test, RedBlackTree* tree) {
   for (int key : test->preorderKeys) {
     tree->add(key);
   }
 }
 
+// Manages the readers/writers problem. It gives priority to readers, and allows
+// a specified number of readers and writers to run. It both modifies and searches
+// the tree.
+// Input: RedBlackTree* tree: The tree to be modified
+//        queue<int*> readOps: A queue of all reading operations that need to be performed.
+//        queue<int*> writeOps: A queue of all write operations that need to be performed.
+//        test_case* cur: The current test case the readers/writers are performing on.
 vector<string>* readersWriters(RedBlackTree* tree, queue<int*> readOps, queue<int*> writeOps, test_case* cur) {
   vector<string>* searchOutput = new vector<string>();
   while (!readOps.empty() || !writeOps.empty()) {
@@ -106,11 +121,16 @@ vector<string>* readersWriters(RedBlackTree* tree, queue<int*> readOps, queue<in
   return searchOutput;
 }
 
+// Gets the current time in milliseconds
+// Output: A long of the elapsed time since the epoch
 long getTime() {
   long curTime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
   return curTime;
 }
 
+// The driver function for the program. It gets all tests from a file and runs them
+// concurrently through the readers/writers problem. It stores running statistics of
+// each test in a file.
 int main() {
   ofstream outputFile("output.txt", ios::out | ios::trunc);
   queue<int*> readOps;
@@ -163,4 +183,5 @@ int main() {
   }
   outputFile << "Time with initial tree construction: " << entireTimeWithConstruction << "ms\n";
   outputFile << "Time without initial tree construction: " << entireTime << "ms\n";
+  outputFile.close();
 }
