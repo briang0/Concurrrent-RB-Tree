@@ -315,10 +315,10 @@ node* RedBlackTree::btAdd(node* root, node* n) {
   if (root == NULL) {
     return n;
   }
-  if (n->key <= root->key) {
+  if (n->key < root->key) {
     root->left = btAdd(root->left, n);
     root->left->parent = root;
-  } else if (n->key > root->key) {
+  } else if (n->key >= root->key) {
     root->right = btAdd(root->right, n);
     root->right->parent = root;
   }
