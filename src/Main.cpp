@@ -140,20 +140,19 @@ int main(int argc, char** argv) {
     directory = argv[1];
   }
   ofstream outputFile("output.txt", ios::out | ios::trunc);
-  queue<int*> readOps;
-  queue<int*> writeOps;
-  RedBlackTree* tree;
   vector<test_case*> status = getTestsFromFile(directory);
   long entireTime = 0;
   long entireTimeWithConstruction = 0;
   long testStart = 0;
   long testStartWithConstruction = 0;
   for (int i = 1; i < status.size(); i++) {
+    queue<int*> readOps;
+    queue<int*> writeOps;
+    RedBlackTree* tree;
     outputFile << "Test #" << i << endl;
     tree = new RedBlackTree();
     testStartWithConstruction = getTime();
     constructTree(status[i], tree);
-    testStart = getTime();
     for (int* op : status[i]->operations) {
       switch (op[0]) {
         case SEARCH:
@@ -174,6 +173,8 @@ int main(int argc, char** argv) {
     sem_init(&barrier, 0, 1);
     numReaders = 0;
     numWriters = 0;
+    numThreads = 0;
+    testStart = getTime();
     vector<string>* output = readersWriters(tree, readOps, writeOps, status[i]);
     long endTime = getTime();
     string* preorderOutput = new string();
@@ -187,7 +188,7 @@ int main(int argc, char** argv) {
     entireTime += (endTime - testStart);
     entireTimeWithConstruction += (endTime - testStartWithConstruction);
   }
-  outputFile << "Time with initial tree construction: " << entireTimeWithConstruction << "ms\n";
-  outputFile << "Time without initial tree construction: " << entireTime << "ms\n";
-  // outputFile.close();
+  outputFile << "Total Time with initial tree construction: " << entireTimeWithConstruction << "ms\n";
+  outputFile << "Total Time without initial tree construction: " << entireTime << "ms\n";
+  outputFile.close();
 }
