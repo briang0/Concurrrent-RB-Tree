@@ -141,14 +141,19 @@ int megaSearchInsert() {
 
 int deletionTest1() {
   RedBlackTree* tree = new RedBlackTree();
+  string* order = new string();
   tree->add(10);
   tree->add(12);
   tree->add(11);
   tree->add(6);
   tree->add(4);
   tree->add(7);
+  tree->preorder(tree->root, order);
+  cout << *order << endl;
+  order = new string();
   tree->remove(6);
-  tree->preorder(tree->root);
+  tree->preorder(tree->root, order);
+  cout << *order << endl;
 }
 
 int main(){

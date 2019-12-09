@@ -29,15 +29,13 @@ public:
 
   void rightRotate(node*);
 
-  void remove();
-
   void preorder(node*, string*);
 
   void inOrderTraversal(vector<node*>*, node*);
 
   vector<node*>* getInOrderTraversal(node*);
 
-  void transplant(node*, node*);
+  node* removeHelper(node*, int);
 
   void remove(int);
 
@@ -48,7 +46,6 @@ public:
   node* searchHelper(int, node*);
 
   int search(int);
-
 
 };
 
@@ -179,6 +176,7 @@ void RedBlackTree::fixDeletion(node* n) {
         a->left->color = false;
         rightRotate(n->parent);
         n = root;
+        break;
       }
     }
   }
@@ -194,48 +192,48 @@ void RedBlackTree::fix(node *n) {
     p = n->parent;
     grandparent = n->parent->parent;
     if (p == grandparent->left) {
-        node *uncle = grandparent->right;
-        if (uncle != NULL && uncle->color) {
-            grandparent->color = true;
-            p->color = false;
-            uncle->color = false;
-            n = grandparent;
-        } else {
-            if (n == p->right) {
-                leftRotate(p);
-                n = p;
-                p = n->parent;
-            }
-            rightRotate(grandparent);
-            bool temp = p->color;
-            p->color = grandparent->color;
-            grandparent->color = temp;
-            n = p;
+      node *uncle = grandparent->right;
+      if (uncle != NULL && uncle->color) {
+        grandparent->color = true;
+        p->color = false;
+        uncle->color = false;
+        n = grandparent;
+      } else {
+        if (n == p->right) {
+          leftRotate(p);
+          n = p;
+          p = n->parent;
         }
+        rightRotate(grandparent);
+        bool temp = p->color;
+        p->color = grandparent->color;
+        grandparent->color = temp;
+        n = p;
+      }
     } else {
-        node *uncle = grandparent->left;
-        if (uncle != NULL && uncle->color == true) {
-            grandparent->color = true;
-            p->color = false;
-            uncle->color = false;
-            n = grandparent;
+      node *uncle = grandparent->left;
+      if (uncle != NULL && uncle->color == true) {
+        grandparent->color = true;
+        p->color = false;
+        uncle->color = false;
+        n = grandparent;
+      }
+      else {
+        if (n == p->left) {
+          rightRotate(p);
+          n = p;
+          p = n->parent;
         }
-        else {
-            if (n == p->left) {
-                rightRotate(p);
-                n = p;
-                p = n->parent;
-            }
-            leftRotate(grandparent);
-            bool temp = p->color;
-            p->color = grandparent->color;
-            grandparent->color = temp;
-            n = p;
-        }
+        leftRotate(grandparent);
+        bool temp = p->color;
+        p->color = grandparent->color;
+        grandparent->color = temp;
+        n = p;
+      }
     }
-}
+  }
 
-root->color = false;
+  root->color = false;
 }
 
 // Rotates n to the position of its left child
@@ -281,70 +279,53 @@ void RedBlackTree::rightRotate(node* toRotate) {
   toRotate->parent = left;
 }
 
-// Replaces sub-trees starting at u and v
-// Input: u: The first sub-tree
-//        v: The second sub-tree
-void RedBlackTree::transplant(node* u, node* v) {
-  if (u->parent == NULL) {
-    root = v;
-  } else if (u == u->parent->left) {
-    u->parent->left = v;
-  } else {
-    u->parent->right = v;
+
+node* FindMax(node* r)
+{
+    if(r==NULL)
+    return NULL;
+
+    while(r->right != NULL)
+    {
+        r = r->right;
+    }
+    return r;
+}
+// Removes a node as a BST would
+// Input: node* n: The current sub-tree root.
+//        int key: The key to be removed
+// Output: Root of the tree
+node* RedBlackTree::removeHelper(node* n, int key) {
+  if (n == NULL) {
+    return n;
   }
-  v->parent = u->parent;
+  else if (key < n->key) {
+    n->left = removeHelper(n->left, key);
+  }
+  else if (key > n->key) {
+    n->right = removeHelper(n->right, key);
+  } else {
+    if (n->right == NULL && n->left == NULL) {
+      delete n;
+      n = NULL;
+    }else if (n->left == NULL) {
+      node* temp = root;
+      n = n->right;
+      delete temp;
+    } else {
+      node* u = FindMax(n->left);
+      n->key = u->key;
+      n->left = removeHelper(n->left, u->key);
+    }
+  }
+  return n;
 }
 
 // Deletes a node with the input key
 // Input: int key: The key of the node to be deleted
 void RedBlackTree::remove(int key) {
-  node* r = root;
-  node* target = NULL;
-  node* a;
-  node* b;
-  while (r != NULL) {
-    if (r->key == key) {
-      target = r;
-    } if (r->key <= key) {
-      r = r->right;
-    } else {
-      r = r->left;
-    }
-  }
-  if (target == NULL) {
-    return;
-  }
-
-  b = target;
-  bool temp = target->color;
-  if (target->left == NULL) {
-    a = target->right;
-    transplant(target, target->right);
-  } else if (target->right == NULL) {
-    a= target->left;
-    transplant(target, target->left);
-  } else {
-    b = target->right;
-    while (b->left != NULL) {
-      b = b->left;
-    }
-    temp = b->color;
-    a = b->right;
-    if (b->parent == target) {
-      a->parent = b;
-    } else {
-      transplant(b, b->right);
-      b->right = target->right;
-      b->right->parent = b;
-    }
-    transplant(target, b);
-    b->left = target->left;
-    b->left->parent = b;
-    b->color = target->color;
-  }
-  if (!temp) {
-    fixDeletion(a);
-  }
+  node* r = removeHelper(root, key);
+  fixDeletion(r);
 }
 
 // Adds a node in the same manner as a BST

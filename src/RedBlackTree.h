@@ -17,11 +17,11 @@ public:
     root = NULL;
   }
 
-  void fix(node*& z);
+  void fix(node* z);
 
-  void leftRotate(node*& toRotate);
+  void leftRotate(node* toRotate);
 
-  void rightRotate(node*& toRotate);
+  void rightRotate(node* toRotate);
 
   void remove(int key);
 

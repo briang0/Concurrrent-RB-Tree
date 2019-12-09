@@ -34,6 +34,7 @@ void *modify(void *args) {
       tree->add(operation[1]);
       break;
     case DELETE:
+    tree->remove(operation[1]);
       break;
   }
   numWriters--;
@@ -131,12 +132,17 @@ long getTime() {
 // The driver function for the program. It gets all tests from a file and runs them
 // concurrently through the readers/writers problem. It stores running statistics of
 // each test in a file.
-int main() {
+int main(int argc, char** argv) {
+  string directory = "RBTinput-1-1-2.txt";
+  if (argc <= 1) {
+    cout << "No input file. Trying RBTinput-1-1-2.txt" << endl;
+  } else {
+    directory = argv[1];
+  }
   ofstream outputFile("output.txt", ios::out | ios::trunc);
   queue<int*> readOps;
   queue<int*> writeOps;
   RedBlackTree* tree;
-  string directory = "RBTinput-1-1-1.txt";
   vector<test_case*> status = getTestsFromFile(directory);
   long entireTime = 0;
   long entireTimeWithConstruction = 0;
@@ -157,7 +163,7 @@ int main() {
           writeOps.push(op);
           break;
         case DELETE:
-          writeOps.push(op);
+          // writeOps.push(op);
           break;
       }
     }
@@ -183,5 +189,5 @@ int main() {
   }
   outputFile << "Time with initial tree construction: " << entireTimeWithConstruction << "ms\n";
   outputFile << "Time without initial tree construction: " << entireTime << "ms\n";
-  outputFile.close();
+  // outputFile.close();
 }

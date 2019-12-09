@@ -115,5 +115,6 @@ vector<struct test_case*> getTestsFromFile(string directory) {
     if (buffer.find("||") != string::npos)
       getAllOperations(buffer, cur);
   }
+  tests.push_back(cur);
   return tests;
 }
