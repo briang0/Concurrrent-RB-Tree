@@ -1,0 +1,9 @@
+This is a red black tree program that can modify and search the tree
+concurrently using readers/writers. Readers have priority over writers, and
+readers cant read if there are any active writers.
+
+To build the application, navigate to this directory and run "make".
+
+To run it, run: ./redblack input.txt
+
+If no input file is entered, the program will try to use RBTinput-1-1-1.txt
